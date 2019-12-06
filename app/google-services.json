@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "504882500211",
-    "firebase_url": "https://flirtatiouschat.firebaseio.com",
-    "project_id": "flirtatiouschat",
-    "storage_bucket": "flirtatiouschat.appspot.com"
+    "project_number": "116708095216",
+    "firebase_url": "https://flirtatiouschat-6f380.firebaseio.com",
+    "project_id": "flirtatiouschat-6f380",
+    "storage_bucket": "flirtatiouschat-6f380.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:504882500211:android:3302198b57b65d18bcd006",
+        "mobilesdk_app_id": "1:116708095216:android:41dc3141bcdceed1b97e35",
         "android_client_info": {
           "package_name": "com.quannv.flirtatiouschat"
         }
       },
       "oauth_client": [
         {
-          "client_id": "504882500211-cl8d0ups7frhaheo01lo8sh46goq5f65.apps.googleusercontent.com",
+          "client_id": "116708095216-nab7di00aptkdrdo834tb3tjqfennd4t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.quannv.flirtatiouschat",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "504882500211-sn8p0l8h9l03i0m2aj5t02j5900ci0bu.apps.googleusercontent.com",
+          "client_id": "116708095216-m5vid4n6npqnnbi4uqeva8bcn5ig76hq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDPAooBCyRPpJ8o-Xtt5gc69hJYuk_dz18"
+          "current_key": "AIzaSyDuhdo7hgBRgcXm0gASLBcSg5ugYhsWte4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "504882500211-sn8p0l8h9l03i0m2aj5t02j5900ci0bu.apps.googleusercontent.com",
+              "client_id": "116708095216-m5vid4n6npqnnbi4uqeva8bcn5ig76hq.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
