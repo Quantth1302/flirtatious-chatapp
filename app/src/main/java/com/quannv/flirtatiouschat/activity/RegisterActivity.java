@@ -19,6 +19,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.quannv.flirtatiouschat.R;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -29,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     private static FirebaseAuth.AuthStateListener mAuthListener;
+    private DatabaseReference rootRef;
 
     private ProgressDialog loadingBar;
 
@@ -40,6 +43,8 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         mAuth = FirebaseAuth.getInstance();
+        rootRef = FirebaseDatabase.getInstance().getReference();
+
         init();
 
         txtAlreadyHaveAccount.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +87,13 @@ public class RegisterActivity extends AppCompatActivity {
         startActivity(loginIntent);
     }
 
+    private void sendUserToMainActivity() {
+        Intent mainIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        mainIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(mainIntent);
+        finish();
+    }
+
     private void createNewAccount(){
         String email = edtUserEmail.getText().toString().trim();
         String password = edtUserPassword.getText().toString().trim();
@@ -104,7 +116,10 @@ public class RegisterActivity extends AppCompatActivity {
                         {
                             if (task.isSuccessful())
                             {
-                                sendUserToLoginActivity();
+                                String currentUserID = mAuth.getCurrentUser().getUid();
+                                rootRef.child("Users").child(currentUserID).setValue("");
+                                
+                                sendUserToMainActivity();
                                 Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
                                 loadingBar.dismiss();
                             }
