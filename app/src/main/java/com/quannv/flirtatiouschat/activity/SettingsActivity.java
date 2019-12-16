@@ -39,7 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingsActivity extends AppCompatActivity {
 
     private Button btnUpdateAccountSettings;
-    private EditText edtUserName, edtUserStatus;
+    private EditText edtUserName, edtUserStatus, edtAddress, edtAge, edtEducation, edtRelationship;
     private CircleImageView imgUserProfile;
 
     private static final int GALLERY_PICK = 1;
@@ -64,7 +64,7 @@ public class SettingsActivity extends AppCompatActivity {
 
         init();
 
-        edtUserName.setVisibility(View.INVISIBLE);
+//        edtUserName.setVisibility(View.INVISIBLE);
 
         btnUpdateAccountSettings.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -157,9 +157,16 @@ public class SettingsActivity extends AppCompatActivity {
     private void updateSettings() {
         String setUserName = edtUserName.getText().toString();
         String setStatus = edtUserStatus.getText().toString();
+        String setAddress = edtAddress.getText().toString();
+        String setAge = edtAge.getText().toString();
+        String setEducation = edtEducation.getText().toString();
+        String setRelationship = edtRelationship.getText().toString();
 
         if (TextUtils.isEmpty(setUserName)) {
             Toast.makeText(this, "Please write your user name first....", Toast.LENGTH_SHORT).show();
+        }
+        if (TextUtils.isEmpty(setAddress) || TextUtils.isEmpty(setAge) || TextUtils.isEmpty(setEducation) || TextUtils.isEmpty(setRelationship)) {
+            Toast.makeText(this, "Please write your more info....", Toast.LENGTH_SHORT).show();
         }
         if (TextUtils.isEmpty(setStatus)) {
             Toast.makeText(this, "Please write your status....", Toast.LENGTH_SHORT).show();
@@ -168,6 +175,10 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("uid", currentUserID);
             profileMap.put("name", setUserName);
             profileMap.put("status", setStatus);
+            profileMap.put("address", setAddress);
+            profileMap.put("age", setAge);
+            profileMap.put("education", setEducation);
+            profileMap.put("relationship", setRelationship);
 
             rootRef.child("Users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -194,18 +205,37 @@ public class SettingsActivity extends AppCompatActivity {
                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                             String retrievesStatus = dataSnapshot.child("status").getValue().toString();
                             String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
+                            String retrieveAddress = dataSnapshot.child("address").getValue().toString();
+                            String retrieveAge = dataSnapshot.child("age").getValue().toString();
+                            String retrieveEducation = dataSnapshot.child("education").getValue().toString();
+                            String retrieveRelationship = dataSnapshot.child("relationship").getValue().toString();
 
                             edtUserName.setText(retrieveUserName);
                             edtUserStatus.setText(retrievesStatus);
+                            edtAddress.setText(retrieveAddress);
+                            edtAge.setText(retrieveAge);
+                            edtEducation.setText(retrieveEducation);
+                            edtRelationship.setText(retrieveRelationship);
+
                             Picasso.get().load(retrieveProfileImage).into(imgUserProfile);
                         } else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name"))) {
                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                             String retrievesStatus = dataSnapshot.child("status").getValue().toString();
 
+                            String retrieveAddress = dataSnapshot.child("address").getValue().toString();
+                            String retrieveAge = dataSnapshot.child("age").getValue().toString();
+                            String retrieveEducation = dataSnapshot.child("education").getValue().toString();
+                            String retrieveRelationship = dataSnapshot.child("image").getValue().toString();
+
                             edtUserName.setText(retrieveUserName);
                             edtUserStatus.setText(retrievesStatus);
+
+                            edtAddress.setText(retrieveAddress);
+                            edtAge.setText(retrieveAge);
+                            edtEducation.setText(retrieveEducation);
+                            edtRelationship.setText(retrieveRelationship);
                         } else {
-                            edtUserName.setVisibility(View.VISIBLE);
+//                            edtUserName.setVisibility(View.VISIBLE);
                             Toast.makeText(SettingsActivity.this, "Please set & update your profile information...", Toast.LENGTH_SHORT).show();
                         }
                     }
@@ -225,10 +255,14 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void init() {
-
         btnUpdateAccountSettings = (Button) findViewById(R.id.update_settings_button);
         edtUserName = (EditText) findViewById(R.id.set_user_name);
         edtUserStatus = (EditText) findViewById(R.id.set_profile_status);
+        edtAddress = (EditText) findViewById(R.id.set_profile_address);
+        edtEducation = (EditText) findViewById(R.id.set_profile_education);
+        edtAge = (EditText) findViewById(R.id.set_profile_age);
+        edtRelationship = (EditText) findViewById(R.id.set_profile_relationship);
+
         imgUserProfile = (CircleImageView) findViewById(R.id.set_profile_image);
 
         loadingBar = new ProgressDialog(this);

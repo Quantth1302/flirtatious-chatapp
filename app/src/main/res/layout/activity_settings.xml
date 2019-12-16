@@ -24,7 +24,7 @@
                 android:layout_height="200dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="90dp"
+                android:layout_marginTop="50dp"
                 android:src="@drawable/profile_image"
                 app:civ_border_color="@color/colorPrimary"
                 app:civ_border_width="2dp" />
@@ -95,7 +95,7 @@
                 android:drawableStart="@drawable/ic_age"/>
 
             <EditText
-                android:id="@+id/set_profile_study"
+                android:id="@+id/set_profile_education"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/set_profile_age"
@@ -114,7 +114,7 @@
                 android:id="@+id/set_profile_relationship"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_study"
+                android:layout_below="@+id/set_profile_education"
                 android:layout_marginStart="15dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="15dp"
