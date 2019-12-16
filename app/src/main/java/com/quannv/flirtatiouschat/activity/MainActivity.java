@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.quannv.flirtatiouschat.R;
 import com.quannv.flirtatiouschat.fragment.ChatsFragment;
 import com.quannv.flirtatiouschat.fragment.ContactsFragment;
+import com.quannv.flirtatiouschat.fragment.HomeFragment;
 import com.quannv.flirtatiouschat.fragment.OptionsFragment;
 import com.quannv.flirtatiouschat.fragment.RequestFragment;
 
@@ -81,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         //I added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                    new ChatsFragment()).commit();
+                    new HomeFragment()).commit();
         }
     }
 
@@ -126,6 +127,9 @@ public class MainActivity extends AppCompatActivity {
                     Fragment selectedFragment = null;
 
                     switch (item.getItemId()) {
+                        case R.id.nav_home:
+                            selectedFragment = new HomeFragment();
+                            break;
                         case R.id.nav_chats:
                             selectedFragment = new ChatsFragment();
                             break;
@@ -138,6 +142,7 @@ public class MainActivity extends AppCompatActivity {
                         case R.id.nav_option:
                             selectedFragment = new OptionsFragment();
                             break;
+
                     }
 
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
