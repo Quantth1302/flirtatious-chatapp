@@ -100,37 +100,6 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:textSize="17sp"
                 android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/login_using"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/need_new_account_link"
-                android:layout_centerHorizontal="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="23dp"
-                android:text="or Login using your"
-                android:textAlignment="center"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <Button
-                android:id="@+id/phone_login_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/login_using"
-                android:layout_marginLeft="19dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginRight="19dp"
-                android:background="@drawable/btn"
-                android:drawableStart="@drawable/phone"
-                android:padding="4dp"
-                android:text="Phone"
-                android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
-                android:textSize="14sp" />
-
         </RelativeLayout>
 
     </ScrollView>

@@ -25,7 +25,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private Button btnLogin, btnPhoneLogin;
+    private Button btnLogin;
     private EditText edtUserEmail, edtUserPassword;
     private TextView txtNeedNewAccountLink, txtForgetPasswordLink;
 
@@ -54,15 +54,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 allowUserLogin();
-            }
-        });
-
-        btnPhoneLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Intent phoneLoginIntent = new Intent(LoginActivity.this, PhoneLoginActivity.class);
-                startActivity(phoneLoginIntent);
             }
         });
     }
@@ -128,7 +119,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private void init() {
         btnLogin = (Button) findViewById(R.id.login_button);
-        btnPhoneLogin = (Button) findViewById(R.id.phone_login_button);
         edtUserEmail = (EditText) findViewById(R.id.login_email);
         edtUserPassword = (EditText) findViewById(R.id.login_password);
         txtNeedNewAccountLink = (TextView) findViewById(R.id.need_new_account_link);

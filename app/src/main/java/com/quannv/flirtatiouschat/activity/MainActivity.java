@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.viewpager.widget.ViewPager;
+import androidx.fragment.app.Fragment;
 //import android.support.design.widget.TabLayout;
 
 import android.content.DialogInterface;
@@ -12,14 +12,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -28,58 +27,131 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.quannv.flirtatiouschat.R;
-import com.quannv.flirtatiouschat.adapter.TabsAccessorAdapter;
+import com.quannv.flirtatiouschat.fragment.ChatsFragment;
+import com.quannv.flirtatiouschat.fragment.ContactsFragment;
+import com.quannv.flirtatiouschat.fragment.OptionsFragment;
+import com.quannv.flirtatiouschat.fragment.RequestFragment;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
-    private Toolbar mToolBar;
-    private ViewPager myViewPager;
-    private TabLayout myTabLayout;
-    private TabsAccessorAdapter myTabsAccessorAdapter;
+    private Toolbar mToolbar;
+//    private ViewPager myViewPager;
+//    private TabLayout myTabLayout;
+//    private TabsAccessorAdapter myTabsAccessorAdapter;
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
+    private DatabaseReference RootRef;
+    private String currentUserID;
 
-    private DatabaseReference rootRef;
+    private BottomNavigationView bottomNav;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
-        rootRef = FirebaseDatabase.getInstance().getReference();
-
-        mToolBar = (Toolbar) findViewById(R.id.main_page_toolbar);
-        setSupportActionBar(mToolBar);
-        getSupportActionBar().setTitle("Flirtatious ChatApp");
-
-        myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
-        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
-        myViewPager.setAdapter(myTabsAccessorAdapter);
+        currentUserID = mAuth.getCurrentUser().getUid();
+        RootRef = FirebaseDatabase.getInstance().getReference();
 
 
-        myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
-        myTabLayout.setupWithViewPager(myViewPager);
+        mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("JustFriend");
 
+
+//        myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+//        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+//        myViewPager.setAdapter(myTabsAccessorAdapter);
+
+
+//        myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+//        myTabLayout.setupWithViewPager(myViewPager);
+
+        bottomNav = findViewById(R.id.bottom_navigation);
+        bottomNav.setOnNavigationItemSelectedListener(navListener);
+
+        //I added this if statement to keep the selected fragment when rotating the device
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                    new ChatsFragment()).commit();
+        }
     }
+
 
     @Override
     protected void onStart() {
         super.onStart();
 
         if (currentUser == null) {
-            sendUserToLoginActivity();
+            SendUserToLoginActivity();
         } else {
-            verifyUserExistance();
+            updateUserStatus("online");
+
+            VerifyUserExistance();
         }
     }
 
-    private void verifyUserExistance() {
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        if (currentUser != null) {
+            updateUserStatus("offline");
+        }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (currentUser != null) {
+            updateUserStatus("offline");
+        }
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.nav_chats:
+                            selectedFragment = new ChatsFragment();
+                            break;
+                        case R.id.nav_friend:
+                            selectedFragment = new ContactsFragment();
+                            break;
+                        case R.id.nav_notification:
+                            selectedFragment = new RequestFragment();
+                            break;
+                        case R.id.nav_option:
+                            selectedFragment = new OptionsFragment();
+                            break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+
+                    return true;
+                }
+            };
+
+
+    private void VerifyUserExistance() {
         String currentUserID = mAuth.getCurrentUser().getUid();
-        rootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+
+        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child("name").exists())) {
@@ -96,90 +168,11 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.option_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        super.onOptionsItemSelected(item);
-
-        if (item.getItemId() == R.id.main_logout_option) {
-            mAuth.signOut();
-            sendUserToLoginActivity();
-        }
-
-        if (item.getItemId() == R.id.main_find_friend_option) {
-            SendUserToFindFriendsActivity();
-
-        }
-
-        if (item.getItemId() == R.id.main_setting_option) {
-            sendUserToSettingActivity();
-        }
-
-        if (item.getItemId() == R.id.main_create_group_option) {
-            requestCreateNewGroup();
-        }
-        return true;
-    }
-
-    //create new group
-    private void requestCreateNewGroup() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this, R.style.AlertDialog);
-        builder.setTitle("Enter Group Name :");
-
-        final EditText groupNameField = new EditText(MainActivity.this);
-        groupNameField.setHint(" Any things");
-        builder.setView(groupNameField);
-
-        builder.setPositiveButton("Create", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                String groupName = groupNameField.getText().toString();
-
-                if (TextUtils.isEmpty(groupName)) {
-                    Toast.makeText(MainActivity.this, "Please write Group Name...", Toast.LENGTH_SHORT).show();
-                } else {
-                    CreateNewGroup(groupName);
-                }
-            }
-        });
-
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                dialogInterface.cancel();
-            }
-        });
-
-        builder.show();
-    }
-
-    private void CreateNewGroup(final String groupName) {
-        rootRef.child("Groups").child(groupName).setValue("")
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(MainActivity.this, groupName + " group is Created Successfully...", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }
-
-
-    private void sendUserToLoginActivity() {
+    private void SendUserToLoginActivity() {
         Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(loginIntent);
-    }
 
-    private void sendUserToSettingActivity() {
-        Intent settingIntent = new Intent(MainActivity.this, SettingsActivity.class);
-        startActivity(settingIntent);
     }
 
     private void SendUserToSettingsActivity() {
@@ -187,9 +180,31 @@ public class MainActivity extends AppCompatActivity {
         startActivity(settingsIntent);
     }
 
-    private void SendUserToFindFriendsActivity()
-    {
+
+    private void SendUserToFindFriendsActivity() {
         Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
         startActivity(findFriendsIntent);
+    }
+
+
+    private void updateUserStatus(String state) {
+        String saveCurrentTime, saveCurrentDate;
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        HashMap<String, Object> onlineStateMap = new HashMap<>();
+        onlineStateMap.put("time", saveCurrentTime);
+        onlineStateMap.put("date", saveCurrentDate);
+        onlineStateMap.put("state", state);
+
+        RootRef.child("Users").child(currentUserID).child("userState")
+                .updateChildren(onlineStateMap);
+
     }
 }

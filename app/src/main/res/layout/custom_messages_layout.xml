@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/message_profile_image"
@@ -24,24 +24,6 @@
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold" />
-
-
-    <ImageView
-        android:id="@+id/message_sender_image_view"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop" />
-
-    <ImageView
-        android:id="@+id/message_receiver_image_view"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_alignParentStart="true"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop" />
-
 
     <TextView
         android:id="@+id/sender_message_text"
