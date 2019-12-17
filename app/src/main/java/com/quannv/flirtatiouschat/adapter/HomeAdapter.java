@@ -1,10 +1,12 @@
 package com.quannv.flirtatiouschat.adapter;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,43 +27,45 @@ public class HomeAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        View gridView;
+//        View gridView;
 
         if (convertView == null) {
 
-            gridView = new View(context);
+//            gridView = new View(context);
 
             // get layout from mobile.xml
-            gridView = inflater.inflate(R.layout.grid_home, null);
+            convertView = inflater.inflate(R.layout.grid_home, null);
 
-            // set value into textview
-            TextView textView = (TextView) gridView
-                    .findViewById(R.id.grid_item_label);
-            textView.setText(mobileValues[position]);
+            convertView.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, getHeightScreen()-100));
 
-            // set image based on selected text
-            ImageView imageView = (ImageView) gridView
-                    .findViewById(R.id.grid_item_image);
 
-            String mobile = mobileValues[position];
-
-            if (mobile.equals("Windows")) {
-                imageView.setImageResource(R.drawable.email);
-            } else if (mobile.equals("iOS")) {
-                imageView.setImageResource(R.drawable.phone);
-            } else if (mobile.equals("Blackberry")) {
-                imageView.setImageResource(R.drawable.email);
-            } else {
-                imageView.setImageResource(R.drawable.login_photo);
-            }
-
-        } else {
-            gridView = (View) convertView;
         }
+//        gridView = (View) convertView;
+        // set value into textview
+//            TextView textView = (TextView) gridView
+//                    .findViewById(R.id.grid_item_label);
+//            textView.setText(mobileValues[position]);
+
+        // set image based on selected text
+        ImageView imageView = (ImageView) convertView
+                .findViewById(R.id.grid_item_image);
+
+        String mobile = mobileValues[position];
+
+        if (mobile.equals("Windows")) {
+            imageView.setImageResource(R.drawable.login_photo);
+        } else if (mobile.equals("iOS")) {
+            imageView.setImageResource(R.drawable.signup_photo);
+        } else if (mobile.equals("Blackberry")) {
+            imageView.setImageResource(R.drawable.login_photo);
+        } else {
+            imageView.setImageResource(R.drawable.file);
+        }
+
 
 //        gridView.setBackgroundResource(R.drawable.border);
 
-        return gridView;
+        return convertView;
     }
 
     @Override
@@ -78,4 +82,12 @@ public class HomeAdapter extends BaseAdapter {
     public long getItemId(int position) {
         return 0;
     }
+
+    private int getHeightScreen() {
+        //        int width = context.getResources().getDisplayMetrics().widthPixels;
+//        gridView.setColumnWidth(width/3);
+
+        return context.getResources().getDisplayMetrics().heightPixels;
+    }
+
 }

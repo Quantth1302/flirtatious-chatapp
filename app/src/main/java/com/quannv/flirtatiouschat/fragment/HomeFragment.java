@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class HomeFragment extends Fragment {
     private View homeView;
 
     static final String[] MOBILE_OS = new String[]{
-            "Android", "iOS", "Windows", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
+            "iOS", "Windows", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry", "Blackberry"};
 
     public HomeFragment() {
         // Required empty public constructor
@@ -42,26 +43,15 @@ public class HomeFragment extends Fragment {
         homeView =  inflater.inflate(R.layout.fragment_home, container, false);
         gridView = (GridView) homeView.findViewById(R.id.grid_home);
         gridView.setAdapter(new HomeAdapter(getContext(), MOBILE_OS));
-        customSize();
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Toast.makeText(
-                        getContext(),
-                        ((TextView) view.findViewById(R.id.grid_item_label))
-                                .getText(), Toast.LENGTH_SHORT).show();
+                        getContext(),"oki", Toast.LENGTH_SHORT).show();
             }
         });
         return homeView;
-    }
-    private void customSize() {
-        DisplayMetrics displaymetrics = new DisplayMetrics();
-        getActivity().getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-        int height = displaymetrics.heightPixels;
-        int width = displaymetrics.widthPixels;
-        gridView.setColumnWidth(width);
-        gridView.setColumnWidth(height);
     }
 
 
