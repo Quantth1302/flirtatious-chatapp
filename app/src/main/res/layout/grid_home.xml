@@ -11,13 +11,52 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:cardCornerRadius="7dp">
-        <ImageView
-            android:id="@+id/grid_item_image"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/phone"
-            android:scaleType="fitXY">
-        </ImageView>
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/grid_item_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/phone"
+                android:scaleType="fitXY">
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="70dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignLeft="@+id/grid_item_image"
+                android:layout_alignRight="@+id/grid_item_image"
+                android:background="#FFFF"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/home_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Linh Nhi, 19"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="left"
+                    android:textColor="#000000"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textSize="26dp"
+                    android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/home_location"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="From Thaibinh Dst, Vietnam"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:gravity="left"
+                    android:layout_gravity="center"
+                    android:textStyle="italic"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="10dp"/>
+            </LinearLayout>
+        </RelativeLayout>
     </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
