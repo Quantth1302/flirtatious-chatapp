@@ -8,7 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.quannv.flirtatiouschat.R;
 import com.quannv.flirtatiouschat.model.User;
 import com.squareup.picasso.Picasso;
@@ -25,7 +27,7 @@ public class HomeAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -34,6 +36,15 @@ public class HomeAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.grid_home, null);
             convertView.setLayoutParams(new GridView.LayoutParams(GridView.AUTO_FIT, getHeightScreen()-300));
         }
+
+        FloatingActionButton btnRemove = convertView.findViewById(R.id.fl_remove);
+        btnRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userList.remove(position);
+                notifyDataSetChanged();
+            }
+        });
 
         User user = userList.get(position);
         // set value into textview

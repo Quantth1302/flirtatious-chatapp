@@ -20,6 +20,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -47,6 +48,8 @@ public class HomeFragment extends Fragment {
 
     private ArrayList<User> userList;
 
+    private FloatingActionButton btnRemove;
+
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -67,6 +70,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+                    if (!dsp.child("name").exists()) continue;
                     String address = dsp.child("address").getValue().toString();
                     int age = Integer.valueOf(dsp.child("age").getValue().toString());
                     String education = dsp.child("education").getValue().toString();
@@ -103,30 +107,30 @@ public class HomeFragment extends Fragment {
         return homeView;
     }
 
-    private void getAllUser() {
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        UsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-                    String address = dsp.child("address").getValue().toString();
-                    int age = Integer.valueOf(dsp.child("age").getValue().toString());
-                    String education = dsp.child("education").getValue().toString();
-                    String image = dsp.child("image").getValue().toString();
-                    String name = dsp.child("name").getValue().toString();
-                    String relationship = dsp.child("relationship").getValue().toString();
-                    String status = dsp.child("status").getValue().toString();
-                    String uid = dsp.child("uid").getValue().toString();
-                    userList.add(new User(uid, name, status, image, address, education, relationship, age));
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                System.out.println("The read failed: " + databaseError.getCode());
-            }
-        });
-    }
+//    private void getAllUser() {
+//        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+//        UsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
+//                    String address = dsp.child("address").getValue().toString();
+//                    int age = Integer.valueOf(dsp.child("age").getValue().toString());
+//                    String education = dsp.child("education").getValue().toString();
+//                    String image = dsp.child("image").getValue().toString();
+//                    String name = dsp.child("name").getValue().toString();
+//                    String relationship = dsp.child("relationship").getValue().toString();
+//                    String status = dsp.child("status").getValue().toString();
+//                    String uid = dsp.child("uid").getValue().toString();
+//                    userList.add(new User(uid, name, status, image, address, education, relationship, age));
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError databaseError) {
+//                System.out.println("The read failed: " + databaseError.getCode());
+//            }
+//        });
+//    }
 
 
 }

@@ -10,7 +10,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:cardCornerRadius="7dp">
+        app:cardCornerRadius="10dp">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -19,17 +19,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:src="@drawable/phone"
-                android:scaleType="fitXY">
+                android:scaleType="fitXY"
+                android:layout_above="@+id/ln_grid_item_bottom">
             </ImageView>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fl_remove"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:layout_alignRight="@+id/grid_item_image"
+                android:layout_alignBottom="@+id/ln_grid_item_bottom"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="45dp"
+                app:srcCompat="@android:drawable/ic_menu_close_clear_cancel"
+                android:tint="@color/colorPrimaryDark"/>
+
+
             <LinearLayout
+                android:id="@+id/ln_grid_item_bottom"
                 android:layout_width="match_parent"
                 android:layout_height="70dp"
                 android:layout_alignParentBottom="true"
-                android:layout_alignLeft="@+id/grid_item_image"
-                android:layout_alignRight="@+id/grid_item_image"
                 android:background="#FFFF"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/home_name"
                     android:layout_width="match_parent"

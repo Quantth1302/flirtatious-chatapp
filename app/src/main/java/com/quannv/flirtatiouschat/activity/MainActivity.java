@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -21,6 +22,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNav;
 
+    private String TAG="TEST";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +65,19 @@ public class MainActivity extends AppCompatActivity {
         currentUser = mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+
+
+        //test if firebase not refresh token
+        currentUser.getIdToken(true).addOnCompleteListener(this, new OnCompleteListener<GetTokenResult>() {
+            @Override
+            public void onComplete(@NonNull Task<GetTokenResult> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "token=" + task.getResult().getToken());
+                } else {
+                    Log.e(TAG, "exception=" +task.getException().toString());
+                }
+            }
+        });
 
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
@@ -79,11 +96,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
 
-
-        int height = bottomNav.getHeight();
-
-
-        //I added this if statement to keep the selected fragment when rotating the device
+        //added this if statement to keep the selected fragment when rotating the device
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                     new HomeFragment()).commit();
@@ -99,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
             SendUserToLoginActivity();
         } else {
             updateUserStatus("online");
-
             VerifyUserExistance();
         }
     }
@@ -158,7 +170,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private void VerifyUserExistance() {
-        String currentUserID = mAuth.getCurrentUser().getUid();
+//        mAuth.signOut();
+//        String currentUserID = mAuth.getCurrentUser().getUid();
 
         RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
