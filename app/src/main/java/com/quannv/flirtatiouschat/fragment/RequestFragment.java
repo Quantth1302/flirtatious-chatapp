@@ -28,8 +28,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.quannv.flirtatiouschat.R;
+import com.quannv.flirtatiouschat.asset.Helper;
 import com.quannv.flirtatiouschat.model.Contacts;
 import com.squareup.picasso.Picasso;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.HashMap;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -133,14 +138,15 @@ public class RequestFragment extends Fragment {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                                 if (i == 0) {
-                                                                    ContactsRef.child(currentUserID).child(list_user_id).child("Contact")
-                                                                            .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    String currentDate = Helper.getCurrentDate();
+                                                                    final HashMap<String, Object> contactMap = new HashMap<String, Object>();
+                                                                    contactMap.put("Contact", "Saved");
+                                                                    contactMap.put("Date", currentDate);
+                                                                    ContactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                ContactsRef.child(list_user_id).child(currentUserID).child("Contact")
-
-                                                                                        .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                ContactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                                         if (task.isSuccessful()) {

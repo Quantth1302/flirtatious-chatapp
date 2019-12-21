@@ -13,7 +13,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".activity.ChatActivity"
             android:parentActivityName=".activity.MainActivity"></activity>
-        <activity android:name=".activity.ProfileActivity" />
+        <activity android:name=".activity.ProfileActivity"
+            android:parentActivityName=".activity.MainActivity"/>
         <activity
             android:name=".activity.FindFriendsActivity"
             android:parentActivityName=".activity.MainActivity" />
