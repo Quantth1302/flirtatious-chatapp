@@ -20,6 +20,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.quannv.flirtatiouschat.R;
+import com.quannv.flirtatiouschat.asset.Helper;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -62,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if(currentUser != null) {
+        if (currentUser != null) {
             sendUserToMainActivity();
         }
     }
@@ -70,7 +71,10 @@ public class LoginActivity extends AppCompatActivity {
     private void allowUserLogin() {
         String email = edtUserEmail.getText().toString().trim();
         String password = edtUserPassword.getText().toString().trim();
-
+        if (!Helper.isValid(email)) {
+            Toast.makeText(this, "Invalid email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         if (TextUtils.isEmpty(email)) {
             Toast.makeText(this, "Pls enter email", Toast.LENGTH_SHORT).show();
             return;
@@ -78,31 +82,28 @@ public class LoginActivity extends AppCompatActivity {
         if (TextUtils.isEmpty(password)) {
             Toast.makeText(this, "Pls enter password", Toast.LENGTH_SHORT).show();
             return;
-        } else {
-            loadingBar.setTitle("Sign in");
-            loadingBar.setMessage("Please wait...");
-            loadingBar.setCanceledOnTouchOutside(true);
-            loadingBar.show();
-
-            mAuth.signInWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                @Override
-                public void onComplete(@NonNull Task<AuthResult> task) {
-                    if (task.isSuccessful()) {
-                        sendUserToMainActivity();
-                        Toast.makeText(LoginActivity.this, "Login Successfully...", Toast.LENGTH_SHORT).show();
-                        loadingBar.dismiss();
-                    }
-                    else
-                    {
-                        String message = task.getException().toString();
-                        Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
-                        Log.d("Signin", message);
-                        loadingBar.dismiss();
-                    }
-                }
-            });
         }
+        loadingBar.setTitle("Sign in");
+        loadingBar.setMessage("Please wait...");
+        loadingBar.setCanceledOnTouchOutside(true);
+        loadingBar.show();
+
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            sendUserToMainActivity();
+                            Toast.makeText(LoginActivity.this, "Login Successfully...", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                        } else {
+                            String message = task.getException().toString();
+                            Toast.makeText(LoginActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
+                            Log.d("Signin", message);
+                            loadingBar.dismiss();
+                        }
+                    }
+                });
     }
 
     private void sendUserToMainActivity() {

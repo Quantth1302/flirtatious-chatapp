@@ -22,11 +22,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.quannv.flirtatiouschat.R;
+import com.quannv.flirtatiouschat.asset.Helper;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private Button btnRegister;
-    private EditText edtUserEmail, edtUserPassword;
+    private EditText edtUserEmail, edtUserPassword, edtConfirmPassword;
     private TextView txtAlreadyHaveAccount;
 
     private FirebaseAuth mAuth;
@@ -35,7 +36,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ProgressDialog loadingBar;
 
-    private static String TAG = "RegisterDEbug";
+    private static String TAG = "RegisterDebug";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,50 +95,55 @@ public class RegisterActivity extends AppCompatActivity {
         finish();
     }
 
-    private void createNewAccount(){
+    private void createNewAccount() {
         String email = edtUserEmail.getText().toString().trim();
         String password = edtUserPassword.getText().toString().trim();
+        String confirm = edtConfirmPassword.getText().toString().trim();
 
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(this, "Pls enter email", Toast.LENGTH_SHORT).show();
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+            Toast.makeText(this, "Password and Email cannot be blank!", Toast.LENGTH_SHORT).show();
+            return;
         }
-        if (TextUtils.isEmpty(password)) {
-            Toast.makeText(this, "Pls enter password", Toast.LENGTH_SHORT).show();
-        } else {
-            loadingBar.setTitle("Creating New Account");
-            loadingBar.setMessage("Please wait, while we wre creating new account for you...");
-            loadingBar.setCanceledOnTouchOutside(true);
-            loadingBar.show();
+        if (TextUtils.isEmpty(confirm) || !password.equals(confirm)) {
+            Toast.makeText(this, "Confirm password invalid!", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
-            mAuth.createUserWithEmailAndPassword(email, password)
-                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task)
-                        {
-                            if (task.isSuccessful())
-                            {
-                                String currentUserID = mAuth.getCurrentUser().getUid();
-                                rootRef.child("Users").child(currentUserID).setValue("");
-                                
-                                sendUserToMainActivity();
-                                Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
-                            else
-                            {
-                                String message = task.getException().toString();
-                                Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
-                                loadingBar.dismiss();
-                            }
+        if (!Helper.isValid(email)) {
+            Toast.makeText(this, "Invalid email!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        loadingBar.setTitle("Creating New Account");
+        loadingBar.setMessage("Please wait, while we wre creating new account for you...");
+        loadingBar.setCanceledOnTouchOutside(true);
+        loadingBar.show();
+
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            String currentUserID = mAuth.getCurrentUser().getUid();
+                            rootRef.child("Users").child(currentUserID).setValue("");
+
+                            sendUserToMainActivity();
+                            Toast.makeText(RegisterActivity.this, "Account Created Successfully...", Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
+                        } else {
+                            String message = task.getException().toString();
+                            Toast.makeText(RegisterActivity.this, "Error : " + message, Toast.LENGTH_SHORT).show();
+                            loadingBar.dismiss();
                         }
-            });
-        }
+                    }
+                });
     }
 
     private void init() {
         btnRegister = (Button) findViewById(R.id.register_button);
         edtUserEmail = (EditText) findViewById(R.id.register_email);
         edtUserPassword = (EditText) findViewById(R.id.register_password);
+        edtConfirmPassword = (EditText) findViewById(R.id.register_confirm_password);
         txtAlreadyHaveAccount = (TextView) findViewById(R.id.already_have_account_link);
 
         loadingBar = new ProgressDialog(this);
