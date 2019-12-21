@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -144,6 +145,7 @@ public class ContactsFragment extends Fragment {
         TextView userName, userStatus;
         CircleImageView profileImage;
         ImageView onlineIcon;
+        Button AcceptButton, CancelButton;
 
 
         public ContactsViewHolder(@NonNull View itemView) {
@@ -153,6 +155,8 @@ public class ContactsFragment extends Fragment {
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
             onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
+            AcceptButton = itemView.findViewById(R.id.request_accept_btn);
+            CancelButton = itemView.findViewById(R.id.request_cancel_btn);
         }
     }
 

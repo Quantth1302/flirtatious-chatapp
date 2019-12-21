@@ -82,7 +82,6 @@ public class HomeFragment extends Fragment {
                     if (uid.equals(currentUserID)) continue;
                     userList.add(new User(uid, name, status, image, address, education, relationship, age));
                 }
-
                 gridView = (GridView) homeView.findViewById(R.id.grid_home);
                 gridView.setAdapter(new HomeAdapter(getContext(), userList));
 
@@ -106,31 +105,6 @@ public class HomeFragment extends Fragment {
         homeView =  inflater.inflate(R.layout.fragment_home, container, false);
         return homeView;
     }
-
-//    private void getAllUser() {
-//        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-//        UsersRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot dsp : dataSnapshot.getChildren()) {
-//                    String address = dsp.child("address").getValue().toString();
-//                    int age = Integer.valueOf(dsp.child("age").getValue().toString());
-//                    String education = dsp.child("education").getValue().toString();
-//                    String image = dsp.child("image").getValue().toString();
-//                    String name = dsp.child("name").getValue().toString();
-//                    String relationship = dsp.child("relationship").getValue().toString();
-//                    String status = dsp.child("status").getValue().toString();
-//                    String uid = dsp.child("uid").getValue().toString();
-//                    userList.add(new User(uid, name, status, image, address, education, relationship, age));
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//                System.out.println("The read failed: " + databaseError.getCode());
-//            }
-//        });
-//    }
 
 
 }

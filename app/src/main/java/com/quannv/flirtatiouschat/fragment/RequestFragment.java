@@ -139,6 +139,7 @@ public class RequestFragment extends Fragment {
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
                                                                                 ContactsRef.child(list_user_id).child(currentUserID).child("Contact")
+
                                                                                         .setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
