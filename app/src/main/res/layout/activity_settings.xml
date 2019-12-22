@@ -4,146 +4,167 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray"
     tools:context=".activity.SettingsActivity">
 
     <include
         android:id="@+id/settings_toolbar"
-        layout="@layout/app_bar_layout">
-    </include>
+        layout="@layout/app_bar_layout"/>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/settings_toolbar">
+
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/set_profile_image"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
                 android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
                 android:layout_marginTop="50dp"
                 android:src="@drawable/profile_image"
                 app:civ_border_color="@color/colorPrimary"
-                app:civ_border_width="2dp" />
+                app:civ_border_width="2dp"
+                android:layout_alignTop="@id/cardProfile"
+                android:layout_alignStart="@id/cardProfile"
+                android:layout_alignEnd="@id/cardProfile"
+                android:elevation="8dp" />
 
-            <EditText
-                android:id="@+id/set_user_name"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardProfile"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_image"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="Username"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                android:textSize="32sp"
-                android:background="@android:color/transparent"/>
+                android:layout_height="match_parent"
+                android:layout_marginTop="150dp"
+                android:layout_marginBottom="-15dp"
+                android:elevation="4dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="30dp">
 
-            <EditText
-                android:id="@+id/set_profile_status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_user_name"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="Change your quote :))"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textAlignment="center"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="normal"
-                android:background="@android:color/transparent"/>
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="50dp">
+                    <EditText
+                        android:id="@+id/set_user_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:hint="Username"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textSize="32sp"
+                        android:textStyle="bold" />
 
-            <EditText
-                android:id="@+id/set_profile_address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_status"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="Address"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="normal"
-                android:drawableStart="@drawable/ic_location"
-                android:background="@android:color/transparent"/>
+                    <EditText
+                        android:id="@+id/set_profile_status"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_user_name"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:hint="Change your quote :))"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textAlignment="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="normal" />
 
-            <EditText
-                android:id="@+id/set_profile_age"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_address"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="Age"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="normal"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_age"/>
+                    <EditText
+                        android:id="@+id/set_profile_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_profile_status"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_location"
+                        android:hint="Address"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="normal" />
 
-            <EditText
-                android:id="@+id/set_profile_education"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_age"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="School"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="normal"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_school"/>
+                    <EditText
+                        android:id="@+id/set_profile_age"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_profile_address"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_age"
+                        android:hint="Age"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="normal" />
 
-            <EditText
-                android:id="@+id/set_profile_relationship"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_education"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="15dp"
-                android:hint="Relationship"
-                android:inputType="textMultiLine"
-                android:padding="3dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="normal"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_relationship"/>
+                    <EditText
+                        android:id="@+id/set_profile_education"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_profile_age"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_school"
+                        android:hint="School"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="normal" />
+
+                    <EditText
+                        android:id="@+id/set_profile_relationship"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_profile_education"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="15dp"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_relationship"
+                        android:hint="Relationship"
+                        android:inputType="textMultiLine"
+                        android:padding="3dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textStyle="normal" />
 
 
-            <Button
-                android:id="@+id/update_settings_button"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/set_profile_relationship"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="15dp"
-                android:background="@drawable/btn"
-                android:inputType="textMultiLine"
-                android:padding="6dp"
-                android:text="Update"
-                android:textAlignment="center"
-                android:textAllCaps="false"
-                android:textColor="@android:color/background_light"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+                    <Button
+                        android:id="@+id/update_settings_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/set_profile_relationship"
+                        android:layout_marginStart="15dp"
+                        android:layout_marginTop="25dp"
+                        android:layout_marginEnd="15dp"
+                        android:layout_marginBottom="25dp"
+                        android:background="@drawable/btn"
+                        android:inputType="textMultiLine"
+                        android:padding="6dp"
+                        android:text="Update"
+                        android:textAlignment="center"
+                        android:textAllCaps="false"
+                        android:textColor="@android:color/background_light"
+                        android:textSize="20sp"
+                        android:textStyle="bold" />
+                </RelativeLayout>
+            </androidx.cardview.widget.CardView>
         </RelativeLayout>
     </ScrollView>
 </RelativeLayout>

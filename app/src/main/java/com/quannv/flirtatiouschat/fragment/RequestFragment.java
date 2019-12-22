@@ -119,7 +119,7 @@ public class RequestFragment extends Fragment {
                                                 final String requestUserStatus = dataSnapshot.child("status").getValue().toString();
 
                                                 holder.userName.setText(requestUserName);
-                                                holder.userStatus.setText("wants to connect with you.");
+                                                holder.userStatus.setText("Wants to connect with you.");
 
 
                                                 holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -202,6 +202,78 @@ public class RequestFragment extends Fragment {
                                                         builder.show();
                                                     }
                                                 });
+
+
+                                                //function accept request chat
+                                                holder.btnAccept.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        String currentDate = Helper.getCurrentDate();
+                                                        final HashMap<String, Object> contactMap = new HashMap<String, Object>();
+                                                        contactMap.put("Contact", "Saved");
+                                                        contactMap.put("Date", currentDate);
+                                                        ContactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                            @Override
+                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                if (task.isSuccessful()) {
+                                                                    ContactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                        @Override
+                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                            if (task.isSuccessful()) {
+                                                                                ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                                        .removeValue()
+                                                                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                            @Override
+                                                                                            public void onComplete(@NonNull Task<Void> task) {
+                                                                                                if (task.isSuccessful()) {
+                                                                                                    ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                                            .removeValue()
+                                                                                                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                                                @Override
+                                                                                                                public void onComplete(@NonNull Task<Void> task) {
+                                                                                                                    if (task.isSuccessful()) {
+                                                                                                                        Toast.makeText(getContext(), "New Contact Saved", Toast.LENGTH_SHORT).show();
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            });
+                                                                                                }
+                                                                                            }
+                                                                                        });
+                                                                            }
+                                                                        }
+                                                                    });
+                                                                }
+                                                            }
+                                                        });
+                                                    }
+                                                });
+
+                                                //function cancel request chat
+                                                holder.btnCancel.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                .removeValue()
+                                                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    @Override
+                                                                    public void onComplete(@NonNull Task<Void> task) {
+                                                                        if (task.isSuccessful()) {
+                                                                            ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                    .removeValue()
+                                                                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                        @Override
+                                                                                        public void onComplete(@NonNull Task<Void> task) {
+                                                                                            if (task.isSuccessful()) {
+                                                                                                Toast.makeText(getContext(), "Contact Deleted", Toast.LENGTH_SHORT).show();
+                                                                                            }
+                                                                                        }
+                                                                                    });
+                                                                        }
+                                                                    }
+                                                                });
+                                                    }
+                                                });
+
 
                                             }
 
@@ -308,7 +380,7 @@ public class RequestFragment extends Fragment {
     public static class RequestsViewHolder extends RecyclerView.ViewHolder {
         TextView userName, userStatus;
         CircleImageView profileImage;
-        Button AcceptButton, CancelButton;
+        Button btnAccept, btnCancel;
 
 
         public RequestsViewHolder(@NonNull View itemView) {
@@ -318,8 +390,8 @@ public class RequestFragment extends Fragment {
             userName = itemView.findViewById(R.id.user_profile_name);
             userStatus = itemView.findViewById(R.id.user_status);
             profileImage = itemView.findViewById(R.id.users_profile_image);
-            AcceptButton = itemView.findViewById(R.id.request_accept_btn);
-            CancelButton = itemView.findViewById(R.id.request_cancel_btn);
+            btnAccept = itemView.findViewById(R.id.request_accept_btn);
+            btnCancel = itemView.findViewById(R.id.request_cancel_btn);
         }
     }
 
