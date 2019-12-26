@@ -38,7 +38,7 @@ public class OptionsFragment extends Fragment {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private DatabaseReference RootRef;
+    private DatabaseReference rootRef;
     private String currentUserID;
 
     public static final int PROFILE=0;
@@ -64,7 +64,7 @@ public class OptionsFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
-        RootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance().getReference();
         return optionView;
     }
 
@@ -125,7 +125,7 @@ public class OptionsFragment extends Fragment {
         onlineStateMap.put("date", saveCurrentDate);
         onlineStateMap.put("state", state);
 
-        RootRef.child("Users").child(currentUserID).child("userState")
+        rootRef.child("Users").child(currentUserID).child("userState")
                 .updateChildren(onlineStateMap);
     }
 

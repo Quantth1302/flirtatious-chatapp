@@ -50,11 +50,11 @@ public class ChatActivity extends AppCompatActivity {
     private TextView userName, userLastSeen;
     private CircleImageView userImage;
 
-    private Toolbar ChatToolBar;
+    private Toolbar chatToolBar;
     private FirebaseAuth mAuth;
-    private DatabaseReference RootRef;
+    private DatabaseReference rootRef;
 
-    private ImageButton SendMessageButton, SendFilesButton;
+    private ImageButton sendMessageButton, SendFilesButton;
     private EditText MessageInputText;
 
     private final List<Messages> messagesList = new ArrayList<>();
@@ -73,7 +73,7 @@ public class ChatActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         messageSenderID = mAuth.getCurrentUser().getUid();
-        RootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
 
         messageReceiverID = getIntent().getExtras().get("visit_user_id").toString();
@@ -88,7 +88,7 @@ public class ChatActivity extends AppCompatActivity {
         Picasso.get().load(messageReceiverImage).placeholder(R.drawable.profile_image).into(userImage);
 
 
-        SendMessageButton.setOnClickListener(new View.OnClickListener() {
+        sendMessageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 SendMessage();
@@ -100,8 +100,8 @@ public class ChatActivity extends AppCompatActivity {
     }
 
     private void IntializeControllers() {
-        ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
-        setSupportActionBar(ChatToolBar);
+        chatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
+        setSupportActionBar(chatToolBar);
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
@@ -115,7 +115,7 @@ public class ChatActivity extends AppCompatActivity {
         userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
         userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
+        sendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
 //        SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
         MessageInputText = (EditText) findViewById(R.id.input_message);
 
@@ -137,7 +137,7 @@ public class ChatActivity extends AppCompatActivity {
 
 
     private void DisplayLastSeen() {
-        RootRef.child("Users").child(messageReceiverID)
+        rootRef.child("Users").child(messageReceiverID)
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -168,7 +168,7 @@ public class ChatActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        RootRef.child("Messages").child(messageSenderID).child(messageReceiverID)
+        rootRef.child("Messages").child(messageSenderID).child(messageReceiverID)
                 .addChildEventListener(new ChildEventListener() {
                     @Override
                     public void onChildAdded(DataSnapshot dataSnapshot, String s) {
@@ -213,7 +213,7 @@ public class ChatActivity extends AppCompatActivity {
             String messageSenderRef = "Messages/" + messageSenderID + "/" + messageReceiverID;
             String messageReceiverRef = "Messages/" + messageReceiverID + "/" + messageSenderID;
 
-            DatabaseReference userMessageKeyRef = RootRef.child("Messages")
+            DatabaseReference userMessageKeyRef = rootRef.child("Messages")
                     .child(messageSenderID).child(messageReceiverID).push();
 
             String messagePushID = userMessageKeyRef.getKey();
@@ -231,7 +231,7 @@ public class ChatActivity extends AppCompatActivity {
             messageBodyDetails.put(messageSenderRef + "/" + messagePushID, messageTextBody);
             messageBodyDetails.put(messageReceiverRef + "/" + messagePushID, messageTextBody);
 
-            RootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
+            rootRef.updateChildren(messageBodyDetails).addOnCompleteListener(new OnCompleteListener() {
                 @Override
                 public void onComplete(@NonNull Task task) {
                     if (task.isSuccessful()) {

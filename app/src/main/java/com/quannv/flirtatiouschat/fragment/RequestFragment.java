@@ -43,10 +43,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class RequestFragment extends Fragment {
 
-    private View RequestsFragmentView;
+    private View requestsFragmentView;
     private RecyclerView myRequestsList;
 
-    private DatabaseReference ChatRequestsRef, UsersRef, ContactsRef;
+    private DatabaseReference chatRequestsRef, usersRef, contactsRef;
     private FirebaseAuth mAuth;
     private String currentUserID;
 
@@ -60,21 +60,21 @@ public class RequestFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        RequestsFragmentView = inflater.inflate(R.layout.fragment_request, container, false);
+        requestsFragmentView = inflater.inflate(R.layout.fragment_request, container, false);
 
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
-        ChatRequestsRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
-        ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        chatRequestsRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
+        contactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts");
 
 
-        myRequestsList = (RecyclerView) RequestsFragmentView.findViewById(R.id.chat_requests_list);
+        myRequestsList = (RecyclerView) requestsFragmentView.findViewById(R.id.chat_requests_list);
         myRequestsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        return RequestsFragmentView;
+        return requestsFragmentView;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class RequestFragment extends Fragment {
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(ChatRequestsRef.child(currentUserID), Contacts.class)
+                        .setQuery(chatRequestsRef.child(currentUserID), Contacts.class)
                         .build();
 
 
@@ -106,7 +106,7 @@ public class RequestFragment extends Fragment {
                                     String type = dataSnapshot.getValue().toString();
 
                                     if (type.equals("received")) {
-                                        UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                        usersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 if (dataSnapshot.hasChild("image")) {
@@ -142,21 +142,21 @@ public class RequestFragment extends Fragment {
                                                                     final HashMap<String, Object> contactMap = new HashMap<String, Object>();
                                                                     contactMap.put("Contact", "Saved");
                                                                     contactMap.put("Date", currentDate);
-                                                                    ContactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    contactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                ContactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                                contactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                     @Override
                                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                                         if (task.isSuccessful()) {
-                                                                                            ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                                            chatRequestsRef.child(currentUserID).child(list_user_id)
                                                                                                     .removeValue()
                                                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                         @Override
                                                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                                                             if (task.isSuccessful()) {
-                                                                                                                ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                                                chatRequestsRef.child(list_user_id).child(currentUserID)
                                                                                                                         .removeValue()
                                                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                                             @Override
@@ -177,13 +177,13 @@ public class RequestFragment extends Fragment {
                                                                     });
                                                                 }
                                                                 if (i == 1) {
-                                                                    ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                    chatRequestsRef.child(currentUserID).child(list_user_id)
                                                                             .removeValue()
                                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                 @Override
                                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                                     if (task.isSuccessful()) {
-                                                                                        ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                        chatRequestsRef.child(list_user_id).child(currentUserID)
                                                                                                 .removeValue()
                                                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                     @Override
@@ -212,21 +212,21 @@ public class RequestFragment extends Fragment {
                                                         final HashMap<String, Object> contactMap = new HashMap<String, Object>();
                                                         contactMap.put("Contact", "Saved");
                                                         contactMap.put("Date", currentDate);
-                                                        ContactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                        contactsRef.child(currentUserID).child(list_user_id).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                             @Override
                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                 if (task.isSuccessful()) {
-                                                                    ContactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                                                    contactsRef.child(list_user_id).child(currentUserID).updateChildren(contactMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                         @Override
                                                                         public void onComplete(@NonNull Task<Void> task) {
                                                                             if (task.isSuccessful()) {
-                                                                                ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                                chatRequestsRef.child(currentUserID).child(list_user_id)
                                                                                         .removeValue()
                                                                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                             @Override
                                                                                             public void onComplete(@NonNull Task<Void> task) {
                                                                                                 if (task.isSuccessful()) {
-                                                                                                    ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                                    chatRequestsRef.child(list_user_id).child(currentUserID)
                                                                                                             .removeValue()
                                                                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                                 @Override
@@ -252,13 +252,13 @@ public class RequestFragment extends Fragment {
                                                 holder.btnCancel.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
-                                                        ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                        chatRequestsRef.child(currentUserID).child(list_user_id)
                                                                 .removeValue()
                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                     @Override
                                                                     public void onComplete(@NonNull Task<Void> task) {
                                                                         if (task.isSuccessful()) {
-                                                                            ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                            chatRequestsRef.child(list_user_id).child(currentUserID)
                                                                                     .removeValue()
                                                                                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                         @Override
@@ -288,7 +288,7 @@ public class RequestFragment extends Fragment {
 
                                         holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
 
-                                        UsersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
+                                        usersRef.child(list_user_id).addValueEventListener(new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 if (dataSnapshot.hasChild("image")) {
@@ -319,13 +319,13 @@ public class RequestFragment extends Fragment {
                                                             @Override
                                                             public void onClick(DialogInterface dialogInterface, int i) {
                                                                 if (i == 0) {
-                                                                    ChatRequestsRef.child(currentUserID).child(list_user_id)
+                                                                    chatRequestsRef.child(currentUserID).child(list_user_id)
                                                                             .removeValue()
                                                                             .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                 @Override
                                                                                 public void onComplete(@NonNull Task<Void> task) {
                                                                                     if (task.isSuccessful()) {
-                                                                                        ChatRequestsRef.child(list_user_id).child(currentUserID)
+                                                                                        chatRequestsRef.child(list_user_id).child(currentUserID)
                                                                                                 .removeValue()
                                                                                                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                                                                                                     @Override

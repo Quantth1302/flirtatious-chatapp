@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
     private FirebaseAuth mAuth;
-    private DatabaseReference RootRef;
+    private DatabaseReference rootRef;
     private String currentUserID;
 
     private BottomNavigationView bottomNav;
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
         currentUserID = mAuth.getCurrentUser().getUid();
-        RootRef = FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
 
         //test if firebase not refresh token
@@ -173,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
 //        mAuth.signOut();
 //        String currentUserID = mAuth.getCurrentUser().getUid();
 
-        RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
+        rootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child("name").exists())) {
@@ -225,7 +225,7 @@ public class MainActivity extends AppCompatActivity {
         onlineStateMap.put("date", saveCurrentDate);
         onlineStateMap.put("state", state);
 
-        RootRef.child("Users").child(currentUserID).child("userState")
+        rootRef.child("Users").child(currentUserID).child("userState")
                 .updateChildren(onlineStateMap);
 
     }

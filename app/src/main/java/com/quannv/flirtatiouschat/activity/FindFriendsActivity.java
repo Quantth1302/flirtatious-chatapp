@@ -26,8 +26,8 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class FindFriendsActivity extends AppCompatActivity {
 
     private Toolbar mToolbar;
-    private RecyclerView FindFriendsRecyclerList;
-    private DatabaseReference UsersRef;
+    private RecyclerView findFriendsRecyclerList;
+    private DatabaseReference usersRef;
 
 
     @Override
@@ -36,11 +36,11 @@ public class FindFriendsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_friends);
 
 
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        FindFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
-        FindFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
+        findFriendsRecyclerList = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
+        findFriendsRecyclerList.setLayoutManager(new LinearLayoutManager(this));
 
 
         mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
@@ -57,7 +57,7 @@ public class FindFriendsActivity extends AppCompatActivity {
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(UsersRef, Contacts.class)
+                        .setQuery(usersRef, Contacts.class)
                         .build();
 
         FirebaseRecyclerAdapter<Contacts, FindFriendViewHolder> adapter =
@@ -90,7 +90,7 @@ public class FindFriendsActivity extends AppCompatActivity {
                     }
                 };
 
-        FindFriendsRecyclerList.setAdapter(adapter);
+        findFriendsRecyclerList.setAdapter(adapter);
 
         adapter.startListening();
     }

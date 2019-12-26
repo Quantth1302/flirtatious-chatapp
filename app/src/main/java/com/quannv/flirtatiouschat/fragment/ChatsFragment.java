@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -35,10 +36,10 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 public class ChatsFragment extends Fragment {
 
-    private View PrivateChatsView;
+    private View privateChatsView;
     private RecyclerView chatsList;
 
-    private DatabaseReference ChatsRef, UsersRef;
+    private DatabaseReference chatsRef, usersRef;
     private FirebaseAuth mAuth;
     private String currentUserID = "";
 
@@ -52,20 +53,20 @@ public class ChatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
+        privateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
 
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
-        ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
-        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        chatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
+        usersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
+        chatsList = (RecyclerView) privateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 
-        return PrivateChatsView;
+        return privateChatsView;
     }
 
     @Override
@@ -75,7 +76,7 @@ public class ChatsFragment extends Fragment {
 
         FirebaseRecyclerOptions<Contacts> options =
                 new FirebaseRecyclerOptions.Builder<Contacts>()
-                        .setQuery(ChatsRef, Contacts.class)
+                        .setQuery(chatsRef, Contacts.class)
                         .build();
 
 
@@ -86,7 +87,7 @@ public class ChatsFragment extends Fragment {
                         final String usersIDs = getRef(position).getKey();
                         final String[] retImage = {"default_image"};
 
-                        UsersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
+                        usersRef.child(usersIDs).addValueEventListener(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 if (dataSnapshot.exists()) {
@@ -108,11 +109,14 @@ public class ChatsFragment extends Fragment {
 
                                         if (state.equals("online")) {
                                             holder.userStatus.setText("online");
+                                            holder.onlineIcon.setVisibility(View.VISIBLE);
                                         } else if (state.equals("offline")) {
                                             holder.userStatus.setText("Last Seen: " + date + " " + time);
+                                            holder.onlineIcon.setVisibility(View.INVISIBLE);
                                         }
                                     } else {
                                         holder.userStatus.setText("offline");
+                                        holder.onlineIcon.setVisibility(View.INVISIBLE);
                                     }
 
                                     holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -151,6 +155,7 @@ public class ChatsFragment extends Fragment {
     public static class ChatsViewHolder extends RecyclerView.ViewHolder {
         CircleImageView profileImage;
         TextView userStatus, userName;
+        ImageView onlineIcon;
 
 
         public ChatsViewHolder(@NonNull View itemView) {
@@ -159,6 +164,7 @@ public class ChatsFragment extends Fragment {
             profileImage = itemView.findViewById(R.id.users_profile_image);
             userStatus = itemView.findViewById(R.id.user_status);
             userName = itemView.findViewById(R.id.user_profile_name);
+            onlineIcon = (ImageView) itemView.findViewById(R.id.user_online_status);
         }
     }
 
