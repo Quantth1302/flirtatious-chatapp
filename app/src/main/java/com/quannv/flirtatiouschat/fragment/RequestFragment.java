@@ -284,7 +284,7 @@ public class RequestFragment extends Fragment {
                                         });
                                     } else if (type.equals("sent")) {
                                         Button request_sent_btn = holder.itemView.findViewById(R.id.request_accept_btn);
-                                        request_sent_btn.setText("Req Sent");
+                                        request_sent_btn.setText("Request Sent");
 
                                         holder.itemView.findViewById(R.id.request_cancel_btn).setVisibility(View.INVISIBLE);
 
